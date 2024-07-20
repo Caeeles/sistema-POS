@@ -30,9 +30,10 @@
                         color: app.color_primary_text
                         halign: 'center'
                         valign: 'bottom'
-                        size_hint_y: None
-                        height: dp(54)
-                    BoxLayout:
+                        #size_hint_y: None
+                        #height: dp(54)
+                    AnchorLayout:
+                        anchor_y: "top"
                         Label:
                             text: 'Escreverei aqui e vamos ver o que vai dar.' #Subtexto que acompanhará o acima
                             #font_size: self.parent.width*0.05
@@ -42,6 +43,7 @@
                             color: app.color_primary_text
                             halign: 'center'
                             valign: 'top'
+                            size_hint_y: None
 
     
     BoxLayout:
@@ -85,6 +87,7 @@
                         hint_text: "usuário"
                         hint_text_color: app.color_primary_text
                         font_size: app.fonts.size.h2
+                        multiline: False
                 BackBox:
                     size_hint_y: None
                     height: dp(64)
@@ -95,15 +98,18 @@
                         hint_text: "senha"
                         hint_text_color: app.color_primary_text
                         font_size: app.fonts.size.h2
+                        password: True
+                        multiline: False
                 BackBox:
                     size_hint_y: None
                     height: dp(64)
                     RoundedButton:
-                        text: "Sign in"
+                        text: "Entrar"
                         font_name: app.fonts.heading
                         font_size: app.fonts.size.h1
                         bcolor: app.color_primary
                         radius: [self.height*.1]
+                        on_release: root.authenticate()
                 BackBox:
                     size_hint_y: None
                     height: dp(64)
