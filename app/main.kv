@@ -1,12 +1,16 @@
 
 #: import Home views.home.Home
 #: import Auth views.auth.Auth
+#: import Pos views.pos.Pos
 
 #: import BackBox widgets.box.BackBox
 #: import Text widgets.labels.Text
 #: import FlatField widgets.textfields.FlatField
+#: import SearchBar widgets.textfields.SearchBar
 #: import FlatButton widgets.buttons.FlatButton
 #: import RoundedButton widgets.buttons.RoundedButton
+
+#: import icon kivy.garden.iconfonts.icon
 
 
 <MainWindow>:
@@ -20,10 +24,11 @@
     ScreenManager:
         id: scrn_mngr
         Screen:
-            name: 'scrn_auth'
-            Auth:
-                id: auth
-        Screen:
             name: 'scrn_home'
             Home:
                 id: home
+        Screen:
+            name: 'scrn_auth'
+            Auth:
+                id: auth
+        
