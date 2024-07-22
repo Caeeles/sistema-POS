@@ -2,6 +2,7 @@
 #: import Home views.home.Home
 #: import Auth views.auth.Auth
 #: import Pos views.pos.Pos
+#: import Admin views.admin.Admin
 
 #: import BackBox widgets.box.BackBox
 #: import Text widgets.labels.Text
@@ -24,6 +25,10 @@
     ScreenManager:
         id: scrn_mngr
         Screen:
+            name: 'scrn_admin'
+            Admin:
+                id: admin
+        Screen:
             name: 'scrn_home'
             Home:
                 id: home
@@ -31,4 +36,5 @@
             name: 'scrn_auth'
             Auth:
                 id: auth
+        
         
