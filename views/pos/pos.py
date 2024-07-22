@@ -2,6 +2,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.modalview import ModalView
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.metrics import dp, sp
 from kivy.utils import rgba, QueryDict
@@ -21,7 +22,16 @@ class Pos(BoxLayout):
         Clock.schedule_once(self.render, .1)
 
     def render(self, _):
-        pass
+        prods = []
+        for x in range(4):
+            prod = {
+                "name": f"Product #0{x}",
+                "pcode": str(x).zfill(8),
+                "price": randint(2, 25),
+                "qty": 1
+            }
+            prods.append(prod)
+        self.ids.ti_search.products = prods
 
 
 
@@ -33,8 +43,31 @@ class Pos(BoxLayout):
             "qty": 1
         }
 
-        self.current_cart.append(data)
+        temp = list(filter(lambda x: x['pcode'] == inst.pcode, self.current_cart))
 
+        if len(temp) > 0:
+            #atualizar qty
+            grid = self.ids.gl_products
+            tgt = None
+            for c in grid.children:
+                if c.pcode == temp[0]['pcode']:
+                    tgt = c
+                    break
+
+            if tgt:
+                self.qty_control(tgt, increasing=True)
+        else:
+            self.current_cart.append(data)
+        
+    def update_total(self):
+        prods = self.ids.gl_receipt.children
+
+        _total = 0
+        for c in prods:
+            _total += round(float(c.price)*int(c.qty), 2)
+
+        self.current_total = _total
+        
     def on_current_cart(self, inst, cart):
         self.ids.gl_products.clear_widgets()
         self.ids.gl_receipt.clear_widgets()
@@ -42,6 +75,8 @@ class Pos(BoxLayout):
         for f in cart:
             self._add_product(f)
             self.add_receipt_item(f)
+
+        self.update_total()
     
     def _add_product(self, product: dict):
         grid = self.ids.gl_products
@@ -75,7 +110,41 @@ class Pos(BoxLayout):
                 #perguntar ao usuário se ele quer deletar o produto
                 _qty = 0
 
-        tile.qty = _qty
+        data = {
+            "name": tile.name,
+            "pcode": tile.pcode,
+            "price": tile.price,
+            "qty": 1
+        }
+        _id  = tile.pcode
+
+        tgt = None
+        tmp = list(self.current_cart)
+        for i, x in enumerate(tmp):
+            if x['pcode'] == _id:
+                tgt = i
+                break
+
+        data['qty'] = _qty
+        data['price'] = (data['price'])
+
+        self.current_cart.pop(i)
+        self.current_cart.insert(i, data)
+
+        #tile.qty = _qty
+    
+    def clear_cart(self):
+        self.current_cart = []
+
+    def checkout_callback(self, poswiew):
+        self.clear_cart()
+        self.ids.ti_search.text = ""
+        self.ids.ti_search.close_dropdowns()
+        
+    def checkout(self):
+        pc = PosCheckout()
+        pc.callback = self.checkout_callback
+        pc.open()
 
 class ProductTile(BoxLayout):
     pcode = StringProperty("")
@@ -100,3 +169,18 @@ class ReceiptItem(BoxLayout):
 
     def render(self, _):
         pass
+
+class PosCheckout(ModalView):
+    callback = ObjectProperty(allownone=True)
+    def __init__(self, **kw) -> None:
+        super().__init__(**kw)
+        Clock.schedule_once(self.render, .1)
+
+    def render(self, _):
+        prods = []
+
+    def complete(self):
+        self.dismiss()
+
+        if self.callback:
+            self.callback(self)

@@ -128,7 +128,8 @@ class OutlineTextField(FlatField):
         self.border_draw.rounded_rectangle=[self.pos[0], self.pos[1], self.size[0], self.size[1], self.radius[0]]
 
 class SearchBar(FlatField):
-    choices = ListProperty(['Product 01', 'Product 02', 'Product 03'])
+    products = ListProperty([])
+    choices = ListProperty([])
     suggestion_widget = ObjectProperty(allownone=True)
     callback = ObjectProperty(allownone = True)
     def __init__(self, **kw):
@@ -165,6 +166,7 @@ class SearchBar(FlatField):
     def show_suggestions(self, suggestion:str):
         suggestions = self.get_suggestions(suggestion)
 
+        self.choices.clear()
         self.choices = suggestions
 
     def on_choices(self, inst, choices):
@@ -194,8 +196,8 @@ class SearchBar(FlatField):
             if x > 0:
                 self.dropdown.open(self)
 
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     def suggest(self, inst):
         if self.callback:
@@ -206,19 +208,14 @@ class SearchBar(FlatField):
             self.dropdown = None
 
     def get_suggestions(self, suggestions):
-        prods = []
-        for x in range(3):
-            pcode = randint(100000, 999999)
-            prod = {
-                "name": f"Product {x}",
-                "qty": 1,
-                "price": 200.00,
-                "pcode": str(pcode)
-            }
-
-            prods.append(prod)
+        prods = self.products
 
         return prods
+    
+    def close_dropdowns(self):
+        if self.dropdown:
+            self.dropdown.dismiss()
+            self.dropdown = None
 
 
 class SuggestionWidget(ButtonBehavior, BoxLayout):
