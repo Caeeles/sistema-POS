@@ -91,11 +91,9 @@ class Users(BoxLayout):
 
         mv.open()
 
-
     def set_update(self, mv):
         print("Updating...")
       
-
     @mainthread
     def set_users(self, users:list):
         grid = self.ids.gl_users
@@ -130,7 +128,6 @@ class Users(BoxLayout):
 
         if self.currentUser:
             self.currentUser.parent.remove_widget(self.currentUser)
-
 
 class UserTile(ButtonBehavior, BoxLayout):
     first_name = StringProperty("")
