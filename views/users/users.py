@@ -10,12 +10,15 @@ from kivy.clock import Clock, mainthread
 
 from kivy.properties import StringProperty, ObjectProperty
 
+from widgets.popups import ConfirmDialog
+
 Builder.load_file('views/users/users.kv')
 
 class Users(BoxLayout):
     def __init__(self, **kw):
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)
+        self.currentUser = None
 
     def render(self, _):
         tl = Thread(target = self.get_users, daemon=True)
@@ -106,9 +109,27 @@ class Users(BoxLayout):
             ut.password = u['password']
             ut.created = u['createdAt']
             ut.last_login = u['signedIn']
+            ut.callback = self.delete_user
             ut.bind(on_release=self.update_user)
 
             grid.add_widget(ut)
+
+    def delete_user(self, user):
+        self.currentUser = user
+        dc = ConfirmDialog()
+        dc.title = "Apagar Usuário"
+        dc.subtitle = "Está certo que deseja deletar este usuário?"
+        dc.textConfirm = "Sim, Apagar"
+        dc.textCancel = "Cancelar"
+        dc.confirmColor = App.get_running_app().color_tertiary
+        dc.cancelColor = App.get_running_app().color_primary
+        dc.confirmCallback = self.delete_from_view
+        dc.open()
+
+    def delete_from_view(self, confirmDialog):
+
+        if self.currentUser:
+            self.currentUser.parent.remove_widget(self.currentUser)
 
 
 class UserTile(ButtonBehavior, BoxLayout):
@@ -118,12 +139,17 @@ class UserTile(ButtonBehavior, BoxLayout):
     password = StringProperty("")
     created = StringProperty("")
     last_login = StringProperty("")
+    callback = ObjectProperty(allownone=True)
     def __init__(self, **kw) -> None:
         super().__init__(**kw)
         Clock.schedule_once(self.render, .1)
 
     def render(self, _):
         pass
+
+    def delete_user(self):
+        if self.callback:
+            self.callback(self)
 
 class ModUser(ModalView):
     first_name = StringProperty("")

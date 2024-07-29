@@ -13,6 +13,8 @@ from kivy.properties import StringProperty, ListProperty, ColorProperty, Numeric
 
 from random import randint
 
+from widgets.popups import ConfirmDialog
+
 Builder.load_file( 'views/pos/pos.kv')
 class Pos(BoxLayout):
     current_total = NumericProperty(0.0)
@@ -142,9 +144,15 @@ class Pos(BoxLayout):
         self.ids.ti_search.close_dropdowns()
         
     def checkout(self):
-        pc = PosCheckout()
-        pc.callback = self.checkout_callback
-        pc.open()
+        dc = ConfirmDialog()
+        dc.title = "Checkout"
+        dc.subtitle = "Tem certeza que deseja concluir essa venda?"
+        dc.textConfirm = "Sim, Checkout"
+        dc.textCancel = "Cancelar"
+        dc.confirmColor = App.get_running_app().color_primary
+        dc.cancelColor = App.get_running_app().color_tertiary
+        dc.confirmCallback = self.checkout_callback
+        dc.open()
 
 class ProductTile(BoxLayout):
     pcode = StringProperty("")
@@ -169,18 +177,3 @@ class ReceiptItem(BoxLayout):
 
     def render(self, _):
         pass
-
-class PosCheckout(ModalView):
-    callback = ObjectProperty(allownone=True)
-    def __init__(self, **kw) -> None:
-        super().__init__(**kw)
-        Clock.schedule_once(self.render, .1)
-
-    def render(self, _):
-        prods = []
-
-    def complete(self):
-        self.dismiss()
-
-        if self.callback:
-            self.callback(self)

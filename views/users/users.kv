@@ -72,6 +72,9 @@
                 color: app.color_primary_text
                 font_size: self.width*.1
                 size_hint_x: .15
+            BoxLayout:
+                size_hint_x: None
+                width: self.height
         BoxLayout:
             ScrollView:
                 do_scroll: [False, True]
@@ -131,6 +134,12 @@
         font_size: self.width*.1
         font_name: app.fonts.body
         size_hint_x: .15
+    FlatButton:
+        text: icon("icon-trash")
+        size_hint_x: None
+        width: self.height
+        color: app.color_tertiary
+        on_release: root.delete_user()
 
 <ModUSer>:
     background: ""
