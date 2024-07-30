@@ -96,7 +96,7 @@ class Pos(BoxLayout):
         rc = ReceiptItem()
         rc.name = item['name']
         rc.qty = item['qty']
-        rc.price = item['price']
+        rc.price = item['price'] * item['qty']
 
         self.ids.gl_receipt.add_widget(rc)
 
