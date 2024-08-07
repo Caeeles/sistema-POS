@@ -2,7 +2,7 @@
 from kivy.app import App
 from kivy.utils import QueryDict, rgba
 from kivy.metrics import dp, sp
-from kivy.properties import ColorProperty, ListProperty
+from kivy.properties import ColorProperty, StringProperty, NumericProperty
 
 from .view import MainWindow
 
@@ -31,6 +31,8 @@ class MainApp(App):
     fonts.subheading = 'assets/fonts/Roboto/Roboto-Medium.ttf'
     fonts.body = 'assets/fonts/Roboto/Roboto-Regular.ttf'
     fonts.styled = 'assets/fonts/Lobster/Lobster-Regular.ttf'
+
+    authenticated_user = StringProperty("")
 
     def build(self):
         return MainWindow()

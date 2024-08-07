@@ -3,6 +3,7 @@
 #: import Insights views.insights.Insights
 
 <Admin>:
+    id: admin_widget
     spacing: dp(12)
     #padding: [dp(32), dp(16)]
     BackBox:
@@ -22,7 +23,7 @@
             spacing: dp(12)
             NavToggle:
                 text: "Venda"
-                icon: icon('icon-airplay')
+                icon: icon('icon-shopping-cart')
                 state: "down"
                 on_release: scrn_mngr.current = "scrn_pos"
             NavToggle:
@@ -95,5 +96,3 @@
         text: root.text
         color: [1, 1, 1, 1]
         font_size: app.fonts.size.h3
-
-            

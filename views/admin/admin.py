@@ -7,5 +7,6 @@ class Admin(BoxLayout):
     def __init__(self, **kw):
         super().__init__(**kw)
 
-    def authenticate(self):
+    def authenticate(self, user_name):
         App.get_running_app().root.ids.scrn_mngr.current = 'scrn_home'
+        print(f"User {user_name} authenticated successfully.")

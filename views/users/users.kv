@@ -68,7 +68,7 @@
                 font_size: self.width*.1
                 size_hint_x: .15
             Text:
-                text: "Último Login"
+                text: "Cargo"
                 color: app.color_primary_text
                 font_size: self.width*.1
                 size_hint_x: .15
@@ -129,7 +129,7 @@
         font_name: app.fonts.body
         size_hint_x: .15
     Text:
-        text: root.last_login
+        text: root.user_role
         color: app.color_primary_text
         font_size: self.width*.1
         font_name: app.fonts.body
@@ -256,6 +256,20 @@
                             font_size: app.fonts.size.h2
                             password: True
                             multiline: False
+                    BackBox:
+                        size_hint_y: None
+                        height: dp(64)
+                        bcolor: app.color_secondary_bg
+                        radius: [self.height*.1]
+                        padding: [dp(12), dp(2)]
+                        Spinner:
+                            id: role
+                            text: "selecione o cargo"
+                            values: root.spinner_values
+                            font_size: app.fonts.size.h2
+                            radius: [self.height*.1]
+                            size_hint_y: None
+                            height: dp(64)
                     Widget:
                     BackBox:
                         size_hint_y: None

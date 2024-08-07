@@ -99,11 +99,12 @@
             height: dp(64)
             spacing: dp(12)
             FlatButton:
-                text: icon("icon-bell")
+                text: icon("icon-trash-2")
                 color: app.color_secondary_text
                 font_size: app.fonts.size.h1
                 size_hint_x: None
                 width: self.height
+                on_release: root.delete_cart()
             Widget:
             BoxLayout:
                 RelativeLayout:
@@ -115,17 +116,19 @@
                     BoxLayout:
                         padding: [0, 0, dp(24), 0]
                         Spinner:
-                            text: "Carlos"
+                            id: user_spinner
+                            text: root.logged_user_name if root.logged_user_name else "Usuário"
                             font_name: app.fonts.styled
                             color: app.color_primary_text
                             font_size: app.fonts.size.h3
                             text_size: self.size
                             halign: "right"
                             valign: "middle"
-                            values: ['Profile', 'Logout']
+                            values: ['Logout']
                             background_normal: ""
                             background_down: ""
                             background_color: [0, 0, 0, 0]
+                            on_text: root.on_spinner_select(self.text)
         Divider:
         BoxLayout:
             orientation: 'vertical'
@@ -210,6 +213,7 @@
                 bcolor: app.color_primary
                 radius: [self.height*.1]
                 on_release: root.checkout()
+                disabled: root.current_total <= 0
 
 
 <Divider@Widget>:
@@ -298,4 +302,3 @@
         color: app.color_primary_text
         valign: "middle"
         size_hint_x: .2
-

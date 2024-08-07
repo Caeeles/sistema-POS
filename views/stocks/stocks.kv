@@ -3,13 +3,72 @@
     orientation: 'vertical'
     padding: dp(12)
     BoxLayout:
+        id: bx_table
+        orientation: "vertical"
+        padding: [0, dp(16), 0, 0]
+        BackBox:
+            size_hint_y: None
+            height: dp(42)
+            bcolor: app.color_secondary_bg
+            spacing: dp(12)
+            padding: [dp(12), 0]
+            Text:
+                text: "Código"
+                color: app.color_primary_text
+                font_size: self.width*.1
+                size_hint_x: .15
+            Text:
+                text: "Produto"
+                color: app.color_primary_text
+                font_size: self.width*.06
+                size_hint_x: .25
+            Text:
+                text: "Estocado"
+                color: app.color_primary_text
+                font_size: self.width*.15
+                size_hint_x: .1
+            Text:
+                text: "Vendido"
+                color: app.color_primary_text
+                font_size: self.width*.15
+                size_hint_x: .1
+            Text:
+                text: "Última Alteração"
+                color: app.color_primary_text
+                font_size: self.width*.1
+                size_hint_x: .15
+            Text:
+                text: "Preço"
+                color: app.color_primary_text
+                font_size: self.width*.1
+                size_hint_x: .15
+            Text:
+                text: "Desconto"
+                color: app.color_primary_text
+                font_size: self.width*.15
+                size_hint_x: .1
+            BoxLayout:
+                size_hint_x: None
+                width: self.height
+        BoxLayout:
+            ScrollView:
+                do_scroll: [False, True]
+                size_hint_y: None
+                height: self.parent.height
+                GridLayout:
+                    id: gl_products
+                    cols: 1
+                    spacing: dp(8)
+                    size_hint_y: None
+                    height: self.minimum_height
+    BoxLayout:
         size_hint_y: None
         height: dp(54)
         BoxLayout:
         BackBox:
             radius: [self.height*.45]
             padding: [dp(12), 0]
-            size_hint_x: .125
+            size_hint_x: .1
             bcolor: app.color_primary
             RelativeLayout:
                 AnchorLayout:
@@ -32,67 +91,10 @@
                         font_size: self.width*.225 # este comando alinha o texto o espaço da caixa, independente da dimensão da tela
                         size_hint_x: .8
                         on_release: root.add_new()
-    BoxLayout:
-        id: bx_table
-        orientation: "vertical"
-        padding: [0, dp(16), 0, 0]
-        BackBox:
-            size_hint_y: None
-            height: dp(42)
-            bcolor: app.color_secondary_bg
-            spacing: dp(12)
-            padding: [dp(12), 0]
-            Text:
-                text: "Código"
-                color: app.color_primary_text
-                font_size: self.width*.1
-                size_hint_x: .15
-            Text:
-                text: "Produto"
-                color: app.color_primary_text
-                font_size: self.width*.1
-                size_hint_x: .15
-            Text:
-                text: "Estocado"
-                color: app.color_primary_text
-                font_size: self.width*.1
-                size_hint_x: .15
-            Text:
-                text: "Vendido"
-                color: app.color_primary_text
-                font_size: self.width*.15
-                size_hint_x: .1
-            Text:
-                text: "Última Venda"
-                color: app.color_primary_text
-                font_size: self.width*.1
-                size_hint_x: .15
-            Text:
-                text: "Preço"
-                color: app.color_primary_text
-                font_size: self.width*.1
-                size_hint_x: .15
-            Text:
-                text: "Desconto"
-                color: app.color_primary_text
-                font_size: self.width*.1
-                size_hint_x: .15
-            BoxLayout:
-                size_hint_x: None
-                width: self.height
-        BoxLayout:
-            ScrollView:
-                do_scroll: [False, True]
-                size_hint_y: None
-                height: self.parent.height
-                GridLayout:
-                    id: gl_products
-                    cols: 1
-                    spacing: dp(8)
-                    size_hint_y: None
-                    height: self.minimum_height
 
-<StockTile>
+
+<StockTile>:
+    product: None
     size_hint_y: None
     height: dp(42)
     spacing: dp(12)
@@ -112,15 +114,15 @@
     Text:
         text: root.product_name
         color: app.color_primary_text
-        font_size: self.width*.1
+        font_size: self.width*.06
         font_name: app.fonts.body
-        size_hint_x: .15
+        size_hint_x: .25
     Text:
         text: root.in_stock
         color: app.color_primary_text
-        font_size: self.width*.1
+        font_size: self.width*.15
         font_name: app.fonts.body
-        size_hint_x: .15
+        size_hint_x: .1
     Text:
         text: root.sold
         color: app.color_primary_text
@@ -140,17 +142,17 @@
         font_name: app.fonts.body
         size_hint_x: .15
     Text:
-        text: root.discount
+        text: f"{root.discount}%"
         color: app.color_primary_text
-        font_size: self.width*.1
+        font_size: self.width*.15
         font_name: app.fonts.body
-        size_hint_x: .15
+        size_hint_x: .1
     FlatButton:
         text: icon("icon-trash")
         size_hint_x: None
         width: self.height
         color: app.color_tertiary
-        on_release: root.delete_product()
+        on_release: root.delete_product_with_confirmation(root.product)
 
 <ModProduct>:
     background: ""
@@ -261,7 +263,19 @@
                         padding: [dp(12), dp(2)]
                         FlatField:
                             id: odate
-                            hint_text: "data do pedido"
+                            hint_text: "data da alteração"
+                            hint_text_color: app.color_primary_text
+                            font_size: app.fonts.size.h2
+                            multiline: False
+                    BackBox:
+                        size_hint_y: None
+                        height: dp(64)
+                        bcolor: app.color_secondary_bg
+                        radius: [self.height*.1]
+                        padding: [dp(12), dp(2)]
+                        FlatField:
+                            id: discount
+                            hint_text: "desconto"
                             hint_text_color: app.color_primary_text
                             font_size: app.fonts.size.h2
                             multiline: False

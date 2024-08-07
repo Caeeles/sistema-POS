@@ -1,4 +1,3 @@
-
 #: import Home views.home.Home
 #: import Auth views.auth.Auth
 #: import Pos views.pos.Pos
@@ -10,9 +9,8 @@
 #: import SearchBar widgets.textfields.SearchBar
 #: import FlatButton widgets.buttons.FlatButton
 #: import RoundedButton widgets.buttons.RoundedButton
-
 #: import icon kivy.garden.iconfonts.icon
-
+#: import Stocks views.stocks.Stocks
 
 <MainWindow>:
     orientation: 'vertical'
@@ -25,6 +23,10 @@
     ScreenManager:
         id: scrn_mngr
         Screen:
+            name: 'scrn_auth'
+            Auth:
+                id: auth
+        Screen:
             name: 'scrn_admin'
             Admin:
                 id: admin
@@ -33,8 +35,6 @@
             Home:
                 id: home
         Screen:
-            name: 'scrn_auth'
-            Auth:
-                id: auth
-        
-        
+            name: 'scrn_stocks'
+            Stocks:
+                id: stocks

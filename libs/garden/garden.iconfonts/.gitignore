@@ -1,4 +1,4 @@
-*.pyc
+
 *.swp
 *.py~
 *.zip
@@ -8,3 +8,15 @@
 *.css~
 !.gitignore
 *.profile
+# Python cache directories
+__pycache__/
+*.pyc
+
+# Local Alembic configuration
+alembic.ini
+
+# Local database files
+pos.db
+
+# Local data files
+products.json

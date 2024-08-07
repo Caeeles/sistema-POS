@@ -165,7 +165,6 @@ class SearchBar(FlatField):
 
     def show_suggestions(self, suggestion:str):
         suggestions = self.get_suggestions(suggestion)
-
         self.choices.clear()
         self.choices = suggestions
 
@@ -207,16 +206,19 @@ class SearchBar(FlatField):
             self.dropdown.dismiss()
             self.dropdown = None
 
-    def get_suggestions(self, suggestions):
-        prods = self.products
-
-        return prods
+    def get_suggestions(self, suggestion: str):
+        suggestion = suggestion.lower()
+        
+        filtered_prods = [prod for prod in self.products if 
+                        suggestion in prod['name'].lower() or 
+                        suggestion in prod['pcode'].lower()]
+        
+        return filtered_prods
     
     def close_dropdowns(self):
         if self.dropdown:
             self.dropdown.dismiss()
             self.dropdown = None
-
 
 class SuggestionWidget(ButtonBehavior, BoxLayout):
     pcode = StringProperty("")
