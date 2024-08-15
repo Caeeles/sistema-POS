@@ -6,6 +6,7 @@
 *.html~
 *.htm~
 *.css~
+venv/
 !.gitignore
 *.profile
 # Python cache directories
